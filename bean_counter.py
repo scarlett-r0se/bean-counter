@@ -58,7 +58,17 @@ def getBeanValue():
 async def on_message(message):
     print('{},{}'.format(message.author,message.author.id))
 
+@bot.command(name='beanbank')
+async def on_message(message):
+    response=''
 
+    value = Beans.getTotalbeans(bot.beanBank)
+    branchBeans = Beans.totalBranchBeans(bot.beanBank)
+    if value > 0:
+        response='There are {} Beans in the Bank Authority\nThe First National Bank of Bean has {} beans'.format(value,branchBeans)
+    else:
+        response='There are No Beans from the Bean Authority.  Lilith we have a problem'
+    await message.send(response)
 
 @bot.command(name='givebean')
 async def on_message(message, arg1):
@@ -83,6 +93,8 @@ async def on_message(message, arg1):
         if accountExists == False:
             bot.beanBank.append([message.author.name,str(message.author.id),str(0)])
             response= 'Account Created!'
+            Beans.setBeanBank(bot.beanBank)
+            bot.beanBank = Beans.getBeanBank()
             print(bot.beanBank)
         else:
             response = 'You already have an account.'

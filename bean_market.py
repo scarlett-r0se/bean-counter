@@ -1,4 +1,8 @@
 import csv
+import random
+import string
+
+from discord.utils import find
 globalBeans=[]
 class Beans:
     def getBeanBank():
@@ -18,6 +22,50 @@ class Beans:
             print(f'Imported {line_count-1} lines.')
         
         return beans
+
+    def getTotalbeans(beans):
+       result = Beans.findBeanAccount(beans,'69')
+       index = result[0]
+       accountExists = result[1]
+       if accountExists:
+        return int(beans[index][2])
+       else:
+           return 0
+    
+    def totalBranchBeans(beans):
+        beanCount=0
+        for bean in beans:
+            if bean[1] !='69':
+                beanCount = beanCount + int(bean[2])
+
+        return beanCount
+            
+
+    def setBeanBank(beans):
+        # field names 
+        fields = ['username','user-id','beans']
+            
+        # name of csv file 
+        filename = "BeanBank.csv"
+            
+        # writing to csv file 
+        with open(filename, 'w') as csvfile: 
+            # creating a csv writer object 
+            csvwriter = csv.writer(csvfile) 
+                
+            # writing the fields 
+            csvwriter.writerow(fields) 
+                
+            # writing the data rows 
+            csvwriter.writerows(beans)
+
+    def beanLog(beans,userName1,userid1,beansAmount,username2,userid2):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        transid = ''.join(random.choice(characters) for i in range(8))
+        print("Transaction ID is",transid)
+        
+        return 0
+
 
     def findBeanAccount(beans,userid):
         print('Looking up Bean account...')
@@ -83,6 +131,5 @@ class Beans:
         return beans
     
     
-    #findBeanAccount(getBeanBank(), '176784920465768448')
-    #withdrawlBeans(getBeanBank(),findBeanAccount(getBeanBank(), '687144803973369532'),1000)
-    #depositBeans(getBeanBank(),findBeanAccount(getBeanBank(), '274474601800753552'),1000)
+    b = getBeanBank()
+    setBeanBank(b)
