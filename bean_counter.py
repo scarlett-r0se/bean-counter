@@ -70,10 +70,46 @@ async def on_message(message):
         response='There are No Beans from the Bean Authority.  Lilith we have a problem'
     await message.send(response)
 
-@bot.command(name='givebean')
-async def on_message(message, arg1):
-    print('{},{}'.format(message.author,message.author.id))    
-    await message.send('You sent {}'.format(arg1))
+
+@bot.command(name='give')
+async def on_message(message, arg1, arg2):
+    userid1=str(message.author.id)
+    userid2=str(arg1[3:21])
+    if userid1 == userid2:
+        await message.send("Nice Try MORON. GET BEAN'D")
+        return
+
+    status1=Beans.findBeanAccount(bot.beanBank,userid1)
+    status2=Beans.findBeanAccount(bot.beanBank,userid2)
+    index1=status1[0]
+    index2=status2[0]
+    accountExist1=status1[1]
+    accountExist2=status2[1]
+
+    if not accountExist1 or not accountExist2:
+        await message.send("One or more of entered accounts does not exist in the Bank of Bean")
+        return
+    bal1=Beans.getBeanBalance(bot.beanBank,index1)
+    bal2=Beans.getBeanBalance(bot.beanBank,index2)
+
+    print(status1,bal1)
+    print(status2,bal2)
+
+    if bal1 < int(arg2):
+        await message.send("Hey you broke ass hoe, you dont have enough money")
+        return
+
+    print(bot.beanBank)
+
+    Beans.withdrawlBeans(bot.beanBank,index1,int(arg2))
+    Beans.depositBeans(bot.beanBank,index2,int(arg2))
+
+    Beans.setBeanBank(bot.beanBank)
+    Beans.beanLog(userid1,arg2,userid2)
+
+    print(bot.beanBank)
+
+
 
 @bot.command(name='account')
 async def on_message(message, arg1):
@@ -104,7 +140,7 @@ async def on_message(message, arg1):
     
     await message.reply(response)
     
-
+@bot.command(name='request')
 
 @bot.command(name='beanval')
 async def bean_val(ctx):
