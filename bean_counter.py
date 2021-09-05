@@ -106,8 +106,42 @@ async def on_message(message, arg1, arg2):
 
     Beans.setBeanBank(bot.beanBank)
     Beans.beanLog(userid1,arg2,userid2)
+    response='<@!{}> sent {} Beans to {}'.format(message.author.id, arg2,arg1)
+    await message.send(response)
+    
 
-    print(bot.beanBank)
+
+@bot.command(name='grant')
+async def on_message(message, arg1, arg2):
+    userid1=str(arg1[3:21])
+    status=Beans.findBeanAccount(bot.beanBank,userid1)
+    index1=status[0]
+    accountExist1=status[1]
+
+    if not accountExist1:
+        await message.send("One or more of entered accounts does not exist in the Bank of Bean")
+        return
+    
+    bal1=Beans.getBeanBalance(bot.beanBank,0)
+    bal2=Beans.getBeanBalance(bot.beanBank,index1)
+
+    if bal1 < int(arg2):
+        await message.send("Hey you broke ass hoe, you dont have enough money")
+        return
+
+    Beans.withdrawlBeans(bot.beanBank,0,int(arg2))
+    Beans.depositBeans(bot.beanBank,index1,int(arg2))
+
+    Beans.setBeanBank(bot.beanBank)
+    Beans.beanLog(69,arg2,userid1)
+    response='The Bean Authority has given {} Beans to {}'.format(arg2,arg1)
+    await message.send(response)
+
+
+
+
+
+
 
 
 
@@ -141,6 +175,11 @@ async def on_message(message, arg1):
     await message.reply(response)
     
 @bot.command(name='request')
+async def on_message(message, arg1, arg2):
+    response='<@!{}> Requests {} Beans from {}'.format(message.author.id, arg2,arg1)
+    await message.send(response)
+
+
 
 @bot.command(name='beanval')
 async def bean_val(ctx):
