@@ -1,22 +1,25 @@
 # bot.py
 import os
 import random
+from aiohttp.http import RESPONSES
 import discord
+from discord import message
 from discord.ext import commands
 from discord.utils import resolve_template
 from dotenv import load_dotenv
 from bean_market import Beans
+import datetime
+
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-
 bot = commands.Bot(command_prefix='!')
 bot.beanBank=[]
 
-
 #INIT EVENTS===================================================================
+
 @bot.event
 async def on_ready():
     guild = discord.utils.get(bot.guilds, name=GUILD)
@@ -28,8 +31,25 @@ async def on_ready():
     bot.beanBank=Beans.getBeanBank()
     #print(bot.beanBank)
     print('Bean Bank Imported!')
+    member = await bot.fetch_user('176784920465768448')
+    response=f'Bean bot has come online at {str(datetime.datetime.now())}\n'
+    response=response+f'{bot.user} is connected to the following guilds:\n'
+    response=response+f'{guild.name}(id: {guild.id})'
+    await member.send("```"+response+"```")
+   
 
-    
+@bot.command(name='embedtest')
+async def embed(ctx):
+
+    embed=discord.Embed()
+    embed.title="This is a test"
+    #(title="Sample Embed", url="https://cdn.discordapp.com/attachments/884556645655511080/884556972165333023/loose-change-450x300.jpg", description="This is an embed that will show how to build an embed and the different components", color=0xFF5733)
+    embed.set_image(url="https://cdn.discordapp.com/attachments/884556645655511080/884556972165333023/loose-change-450x300.jpg")
+
+    await ctx.send(embed=embed)
+
+
+
 
 
 @bot.event
@@ -66,9 +86,14 @@ async def on_message(message):
     branchBeans = Beans.totalBranchBeans(bot.beanBank)
     if value > 0:
         response='There are {} Beans in the Bank Authority\nThe First National Bank of Bean has {} beans'.format(value,branchBeans)
+        await message.send(response)
+
     else:
         response='There are No Beans from the Bean Authority.  Lilith we have a problem'
-    await message.send(response)
+        embed=discord.Embed()
+        embed.title="WE'RE OUT OF MONEY!?"
+        embed.set_image(url="https://c.tenor.com/jGcC6ISzK8UAAAAC/kermit-panic.gif")
+        await message.send(response,embed=embed)
 
 
 @bot.command(name='give')
