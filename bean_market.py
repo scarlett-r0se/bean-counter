@@ -3,6 +3,7 @@ import random
 import string
 import datetime
 
+
 from discord.utils import find
 globalBeans=[]
 class Beans:

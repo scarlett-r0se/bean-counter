@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 from bean_market import Beans
 import datetime
 
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -18,7 +17,44 @@ GUILD = os.getenv('DISCORD_GUILD')
 bot = commands.Bot(command_prefix='!')
 bot.beanBank=[]
 
-#INIT EVENTS===================================================================
+
+
+
+#=====
+import threading
+import time
+
+
+
+
+async def test(message):
+    while 1==1:
+        currentTime = str(datetime.datetime.now())
+        await printOut(f'{message} {currentTime}',737408433015226422)
+        time.sleep(5)
+
+
+async def printOut(message,channelID):
+
+    channel = bot.get_channel(channelID)
+    await channel.send("```"+message+"```")
+
+
+#t1 = threading.Thread(target=test(message))
+
+#=====
+
+
+#LOGICISTIC FUNCTIONS=========================================================
+def getBeanValue():
+    beanValue=8
+    return beanValue
+def textFormat(message,option,color):
+    formated=''
+    return formated
+#/LOGICISTIC FUNCTIONS========================================================
+
+#INIT EVENTS==================================================================
 
 @bot.event
 async def on_ready():
@@ -35,7 +71,10 @@ async def on_ready():
     response=f'Bean bot has come online at {str(datetime.datetime.now())}\n'
     response=response+f'{bot.user} is connected to the following guilds:\n'
     response=response+f'{guild.name}(id: {guild.id})'
-    await member.send("```"+response+"```")
+    #await t1("hi, im elfo")
+    channel = bot.get_channel(737408433015226422)
+    await channel.send("```"+response+"```")
+
    
 
 @bot.command(name='embedtest')
@@ -67,21 +106,13 @@ async def on_error(event, *args, **kwargs):
             raise
 #/INIT EVENTS===================================================================
 
-#LOGICISTIC FUNCTIONS========================================================
-def getBeanValue():
-    beanValue=8
-    return beanValue
-#/LOGICISTIC FUNCTIONS========================================================
 
 #COMMANDS===================================================================
-@bot.command(name='test')
-async def on_message(message):
-    print('{},{}'.format(message.author,message.author.id))
 
 @bot.command(name='beanbank')
 async def on_message(message):
     response=''
-
+    print(message)
     value = Beans.getTotalbeans(bot.beanBank)
     branchBeans = Beans.totalBranchBeans(bot.beanBank)
     if value > 0:
