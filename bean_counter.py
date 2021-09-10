@@ -123,7 +123,7 @@ async def on_message(message):
         response='There are No Beans from the Bean Authority.  Lilith we have a problem'
         embed=discord.Embed()
         embed.title="WE'RE OUT OF MONEY!?"
-        embed.set_image(url="https://c.tenor.com/jGcC6ISzK8UAAAAC/kermit-panic.gif")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/884556645655511080/885998210986967140/lilithgaypaniccolor.png")
         await message.send(response,embed=embed)
 
 
