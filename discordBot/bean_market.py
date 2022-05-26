@@ -10,7 +10,7 @@ class Beans:
     def getBeanBank():
         beans=[]
         
-        with open('BeanBank.csv') as csv_file:
+        with open('/discordBot/BeanBank.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
@@ -48,7 +48,7 @@ class Beans:
         fields = ['username','user-id','beans']
             
         # name of csv file 
-        filename = "BeanBank.csv"
+        filename = "/discordBot/BeanBank.csv"
             
         # writing to csv file 
         with open(filename, 'w') as csvfile: 
@@ -66,7 +66,7 @@ class Beans:
         characters = string.ascii_letters + string.digits
         transid = ''.join(random.choice(characters) for i in range(32))        
         currentTime = str(datetime.datetime.now())
-        filename="BeanBankLog.csv"
+        filename="/discordBot/BeanBankLog.csv"
     
         with open(filename) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
